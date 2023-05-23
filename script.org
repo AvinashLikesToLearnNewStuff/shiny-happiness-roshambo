@@ -1,0 +1,104 @@
+
+
+* computer choice
+this is a function to get computer choice 
+it creates a random object between 1 and 3 and assigns 1 to rock, 2 to paper and 3 to scizzors
+#+BEGIN_SRC  javascript  :tangle script.js
+
+function getComputerChoice(){
+    let computerChoice = Math.floor(Math.random() * (4-1) + 1);
+    if (computerChoice == 1){computerChoice = 'rock'}
+    else if (computerChoice == 2){computerChoice = 'paper'}
+    else {computerChoice = 'scizzor'};
+    return computerChoice;
+} 
+#+END_SRC
+
+
+* playing the game 
+  it takes two parameters - playerSelection and computerSelection 
+  first we convert the player given string to lower case
+  then we get a computerSelection by running the getComputerchoice function
+
+  the last part is to compare both 
+  now there are three possibilities
+** Decision table
+  |-----------------+-------------------+---------------------|
+  | playerselection | computerselection | result (for player) |
+  |-----------------+-------------------+---------------------|
+  | rock            | rock              | tie                 |
+  |                 | paper             | loss                |
+  |                 | scizzor           | win                 |
+  |-----------------+-------------------+---------------------|
+  | paper           | rock              | win                 |
+  |                 | paper             | tie                 |
+  |                 | scizzor           | loss                |
+  |-----------------+-------------------+---------------------|
+  | scizzor         | rock              | loss                |
+  |                 | paper             | win                 |
+  |                 | scizzor           | tie                 |
+  |-----------------+-------------------+---------------------|
+
+
+#+BEGIN_SRC  javascript  :tangle script.js
+  function playRound(playerSelection, ComputerSelection){
+      playerSelection = playerSelection.toLowerCase();  // converting the player string to lower case
+      let computerSelection = getComputerChoice();
+      console.log("player " + playerSelection + " computer " + computerSelection);
+
+      if ( (playerSelection == 'rock' && computerSelection == "scizzor")
+	   ||  (playerSelection == 'paper' && computerSelection== "rock") ||
+	   (playerSelection == 'scizzor' && computerSelection =="paper")
+	 ) {return `You win! ${playerSelection} beats ${computerSelection}`}
+
+
+      else if (
+	  (playerSelection == "rock" && computerSelection == "paper")
+	      ||  (playerSelection == "paper" && computerSelection== "scizzor") ||
+	      (playerSelection == "scizzor" && computerSelection =="rock")
+      ) {return `you lose! ${computerSelection} beats ${playerSelection}`}
+
+      else {
+	  return `it's a tie, you chose ${playerSelection} and the computer chose ${computerSelection} `}
+  }
+
+#+END_SRC
+
+* Round Control 
+  This is a function that lets us play the game 5 times, it also keeps score and delcares the winner at the end
+
+ Requirements
+- make the playe play 5 rounds
+- at the end of each round, take input in the form of prompt
+- keep score
+- declare winner at the end 
+
+** function to play 5 rounds
+
+for round 1 to 5 
+    get computer choice
+    get input from player
+    log the winner or loser
+    store the result 
+    display the result at the end 
+end 
+#+BEGIN_SRC  javascript  :tangle script.js
+function play5Rounds(){
+let playerSelection;
+let computerSelection = getComputerChoice();
+    for (let i = 0; i < 5; i++){
+    console.log(`Round ${i+1}`);
+    computerSelection = getComputerChoice();
+    playerSelection = prompt("enter rock,paper or scizzor");
+        console.log(playRound(playerSelection, computerSelection));
+    }
+}
+#+END_SRC
+
+
+* running the game
+
+
+#+BEGIN_SRC  javascript  :tangle script.js
+play5Rounds();
+#+END_SRC
