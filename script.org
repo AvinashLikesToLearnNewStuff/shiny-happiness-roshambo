@@ -14,7 +14,6 @@ function getComputerChoice(){
 } 
 #+END_SRC
 
-
 * playing the game 
   it takes two parameters - playerSelection and computerSelection 
   first we convert the player given string to lower case
@@ -22,7 +21,7 @@ function getComputerChoice(){
 
   the last part is to compare both 
   now there are three possibilities
-** Decision table
+** Decision table 
   |-----------------+-------------------+---------------------|
   | playerselection | computerselection | result (for player) |
   |-----------------+-------------------+---------------------|
@@ -39,30 +38,32 @@ function getComputerChoice(){
   |                 | scizzor           | tie                 |
   |-----------------+-------------------+---------------------|
 
+** playRound Function
+This function logs who won and returns the result of the round in form of 1, -1 or 0;
 
-#+BEGIN_SRC  javascript  :tangle script.js
-  function playRound(playerSelection, ComputerSelection){
-      playerSelection = playerSelection.toLowerCase();  // converting the player string to lower case
-      let computerSelection = getComputerChoice();
-  //    console.log("player " + playerSelection + " computer " + computerSelection); //this is here for debugging 
+ #+BEGIN_SRC  javascript  :tangle script.js
+   function playRound(playerSelection, ComputerSelection){
+       playerSelection = playerSelection.toLowerCase();  // converting the player string to lower case
+       let computerSelection = getComputerChoice();
+   //    console.log("player " + playerSelection + " computer " + computerSelection); //this is here for debugging 
 
-      if ( (playerSelection == 'rock' && computerSelection == "scizzor")
-	   ||  (playerSelection == 'paper' && computerSelection== "rock") ||
-	   (playerSelection == 'scizzor' && computerSelection =="paper")
-	 ) {console.log( `You win! ${playerSelection} beats ${computerSelection}`);return 1;}
+       if ( (playerSelection == 'rock' && computerSelection == "scizzor")
+	    ||  (playerSelection == 'paper' && computerSelection== "rock") ||
+	    (playerSelection == 'scizzor' && computerSelection =="paper")
+	  ) {console.log( `You win! ${playerSelection} beats ${computerSelection}`);return 1;}
 
 
-      else if (
-	  (playerSelection == "rock" && computerSelection == "paper")
-	      ||  (playerSelection == "paper" && computerSelection== "scizzor") ||
-	      (playerSelection == "scizzor" && computerSelection =="rock")
-      ) {console.log( `you lose! ${computerSelection} beats ${playerSelection}`); return -1;}
+       else if (
+	   (playerSelection == "rock" && computerSelection == "paper")
+	       ||  (playerSelection == "paper" && computerSelection== "scizzor") ||
+	       (playerSelection == "scizzor" && computerSelection =="rock")
+       ) {console.log( `you lose! ${computerSelection} beats ${playerSelection}`); return -1;}
 
-      else {
-	  console.log( `it's a tie, you chose ${playerSelection} and the computer chose ${computerSelection} `);return 0;}
-  }
+       else {
+	   console.log( `it's a tie, you chose ${playerSelection} and the computer chose ${computerSelection} `);return 0;}
+   }
 
-#+END_SRC
+ #+END_SRC
 
 * Round Control 
   This is a function that lets us play the game 5 times, it also keeps score and delcares the winner at the end
@@ -110,14 +111,14 @@ end
 #+END_SRC
 
 *** Function WhoWon
-    This function compares the player scores and the computer scores and tells who wins at the end 
-#+BEGIN_SRC  javascript  :tangle script.js
-function whoWon(playerScore,computerScore){
-     if(playerScore>computerScore) {console.log("player Wins!!");}
-      else if(playerScore<computerScore) {console.log("computer Wins");}
-      else {console.log("its a tie");}
-}
-#+END_SRC
+     This function compares the player scores and the computer scores and tells who wins at the end 
+ #+BEGIN_SRC  javascript  :tangle script.js
+ function whoWon(playerScore,computerScore){
+      if(playerScore>computerScore) {console.log("player Wins!!");}
+       else if(playerScore<computerScore) {console.log("computer Wins");}
+       else {console.log("its a tie");}
+ }
+ #+END_SRC
 
 * running the game
 
