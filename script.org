@@ -1,128 +1,184 @@
+* Html body of the game 
+we will have 3 buttons and when the player clicks on a button, a round is played or playRound should be called with the correct playerSelection
+
+#+BEGIN_SRC html :tangle index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rock Paper Scizzors game</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+  </head>
+  <body>
+  <button data-type = "rock" class="rock game">
+  Rock
+  </button>
+  
+  <button  data-type = "paper" class="paper game">
+  Paper
+  </button>
+
+  <button  data-type = "scizzor" class="scizzor game">
+  Scizzor
+  </button>
+	<script src="script.js" defer></script>
+  </body>
+</html>
+#+END_SRC 
+
+* JS of the game 
+** computer choice
+   this is a function to get computer choice 
+   it creates a random object between 1 and 3 and assigns 1 to rock, 2 to paper and 3 to scizzors
+   #+BEGIN_SRC  javascript  :tangle script.js
+
+ function getComputerChoice(){
+     let computerChoice = Math.floor(Math.random() * (4-1) + 1);
+     if (computerChoice == 1){computerChoice = 'rock'}
+     else if (computerChoice == 2){computerChoice = 'paper'}
+     else {computerChoice = 'scizzor'};
+     return computerChoice;
+ } 
+   #+END_SRC
+
+** playing the game 
+   it takes two parameters - playerSelection and computerSelection 
+   first we convert the player given string to lower case
+   then we get a computerSelection by running the getComputerchoice function
+
+   the last part is to compare both 
+   now there are three possibilities
+*** Decision table 
+    |-----------------+-------------------+---------------------|
+    | playerselection | computerselection | result (for player) |
+    |-----------------+-------------------+---------------------|
+    | rock            | rock              | tie                 |
+    |                 | paper             | loss                |
+    |                 | scizzor           | win                 |
+    |-----------------+-------------------+---------------------|
+    | paper           | rock              | win                 |
+    |                 | paper             | tie                 |
+    |                 | scizzor           | loss                |
+    |-----------------+-------------------+---------------------|
+    | scizzor         | rock              | loss                |
+    |                 | paper             | win                 |
+    |                 | scizzor           | tie                 |
+    |-----------------+-------------------+---------------------|
+
+*** playRound Function
+    This function logs who won and returns the result of the round in form of 1, -1 or 0;
+
+    #+BEGIN_SRC  javascript  :tangle script.js
+    function playRound(playerSelection, ComputerSelection){
+	playerSelection = playerSelection.toLowerCase();  // converting the player string to lower case
+	let computerSelection = getComputerChoice();
+    //    console.log("player " + playerSelection + " computer " + computerSelection); //this is here for debugging 
+
+	if ( (playerSelection == 'rock' && computerSelection == "scizzor")
+	     ||  (playerSelection == 'paper' && computerSelection== "rock") ||
+	     (playerSelection == 'scizzor' && computerSelection =="paper")
+	   ) {console.log( `You win! ${playerSelection} beats ${computerSelection}`);return 1;}
 
 
-* computer choice
-this is a function to get computer choice 
-it creates a random object between 1 and 3 and assigns 1 to rock, 2 to paper and 3 to scizzors
-#+BEGIN_SRC  javascript  :tangle script.js
+	else if (
+	    (playerSelection == "rock" && computerSelection == "paper")
+		||  (playerSelection == "paper" && computerSelection== "scizzor") ||
+		(playerSelection == "scizzor" && computerSelection =="rock")
+	) {console.log( `you lose! ${computerSelection} beats ${playerSelection}`); return -1;}
 
-function getComputerChoice(){
-    let computerChoice = Math.floor(Math.random() * (4-1) + 1);
-    if (computerChoice == 1){computerChoice = 'rock'}
-    else if (computerChoice == 2){computerChoice = 'paper'}
-    else {computerChoice = 'scizzor'};
-    return computerChoice;
-} 
-#+END_SRC
+	else {
+	    console.log( `it's a tie, you chose ${playerSelection} and the computer chose ${computerSelection} `);return 0;}
+    }
 
-* playing the game 
-  it takes two parameters - playerSelection and computerSelection 
-  first we convert the player given string to lower case
-  then we get a computerSelection by running the getComputerchoice function
+    #+END_SRC
 
-  the last part is to compare both 
-  now there are three possibilities
-** Decision table 
-  |-----------------+-------------------+---------------------|
-  | playerselection | computerselection | result (for player) |
-  |-----------------+-------------------+---------------------|
-  | rock            | rock              | tie                 |
-  |                 | paper             | loss                |
-  |                 | scizzor           | win                 |
-  |-----------------+-------------------+---------------------|
-  | paper           | rock              | win                 |
-  |                 | paper             | tie                 |
-  |                 | scizzor           | loss                |
-  |-----------------+-------------------+---------------------|
-  | scizzor         | rock              | loss                |
-  |                 | paper             | win                 |
-  |                 | scizzor           | tie                 |
-  |-----------------+-------------------+---------------------|
+** Round Control 
+   This is a function that lets us play the game 5 times, it also keeps score and delcares the winner at the end
 
-** playRound Function
-This function logs who won and returns the result of the round in form of 1, -1 or 0;
+   Requirements
+   - make the playe play 5 rounds
+   - at the end of each round, take input in the form of prompt
+   - keep score
+     How to keep the score?
+   We can make a separate function that can track player wins and player losses and ties 
+   if player wins then we can return that as 1, if player loses then we can return that as -1 and it it's a tie, we can return 0 
 
- #+BEGIN_SRC  javascript  :tangle script.js
-   function playRound(playerSelection, ComputerSelection){
-       playerSelection = playerSelection.toLowerCase();  // converting the player string to lower case
-       let computerSelection = getComputerChoice();
-   //    console.log("player " + playerSelection + " computer " + computerSelection); //this is here for debugging 
+   - declare winner at the end 
 
-       if ( (playerSelection == 'rock' && computerSelection == "scizzor")
-	    ||  (playerSelection == 'paper' && computerSelection== "rock") ||
-	    (playerSelection == 'scizzor' && computerSelection =="paper")
-	  ) {console.log( `You win! ${playerSelection} beats ${computerSelection}`);return 1;}
+*** function to play 5 rounds
 
-
-       else if (
-	   (playerSelection == "rock" && computerSelection == "paper")
-	       ||  (playerSelection == "paper" && computerSelection== "scizzor") ||
-	       (playerSelection == "scizzor" && computerSelection =="rock")
-       ) {console.log( `you lose! ${computerSelection} beats ${playerSelection}`); return -1;}
-
-       else {
-	   console.log( `it's a tie, you chose ${playerSelection} and the computer chose ${computerSelection} `);return 0;}
-   }
-
- #+END_SRC
-
-* Round Control 
-  This is a function that lets us play the game 5 times, it also keeps score and delcares the winner at the end
-
- Requirements
-- make the playe play 5 rounds
-- at the end of each round, take input in the form of prompt
-- keep score
-  How to keep the score?
-We can make a separate function that can track player wins and player losses and ties 
-if player wins then we can return that as 1, if player loses then we can return that as -1 and it it's a tie, we can return 0 
-
-- declare winner at the end 
-
-** function to play 5 rounds
-
-for round 1 to 5 
+    for round 1 to 5 
     get computer choice
     get input from player
     log the winner or loser
     store the result of each round and keep the score
     display the result at the end 
-end 
-#+BEGIN_SRC  javascript  :tangle script.js
-  function play5Rounds(){
-      let playerSelection;
-      let playerScore=0;
-      let computerScore=0;
-      let computerSelection = getComputerChoice();
-      for (let i = 0; i < 5; i++){
-	  console.log(`Round ${i+1}`);
-	  computerSelection = getComputerChoice();
-	  playerSelection = prompt("enter rock,paper or scizzor");
+    end 
+    #+BEGIN_SRC  javascript  :tangle script.js
+      function play5Rounds(playerSelection){
+ console.log(playerSelection);
+       let playerScore=0;
+       let computerScore=0;
+       let computerSelection = getComputerChoice();
+       for (let i = 0; i < 5; i++){
+	   console.log(`Round ${i+1}`);
+	   computerSelection = getComputerChoice();
+//	   playerSelection = prompt("enter rock,paper or scizzor");
 
-	  let scoreOfThisRound = playRound(playerSelection, computerSelection);
+	   let scoreOfThisRound = playRound(playerSelection, computerSelection);
 
-	  if (scoreOfThisRound == 1){playerScore++;}
-	  else if (scoreOfThisRound==-1){computerScore++;}
-	  else{}
-	  console.log(`playerScore = ${playerScore} and computerScore = ${computerScore}`);   
+	   if (scoreOfThisRound == 1){playerScore++;}
+	   else if (scoreOfThisRound==-1){computerScore++;}
+	   else{}
+	   console.log(`playerScore = ${playerScore} and computerScore = ${computerScore}`);   
 
-      }
-      whoWon(playerScore, computerScore);
-  }
-#+END_SRC
+       }
+       whoWon(playerScore, computerScore);
+   }
+   
+    #+END_SRC
 
 
-*** Function WhoWon
+**** Function WhoWon
      This function compares the player scores and the computer scores and tells who wins at the end 
- #+BEGIN_SRC  javascript  :tangle script.js
- function whoWon(playerScore,computerScore){
-      if(playerScore>computerScore) {console.log("player Wins!!");}
-       else if(playerScore<computerScore) {console.log("computer Wins");}
-       else {console.log("its a tie");}
- }
+     #+BEGIN_SRC  javascript  :tangle script.js
+  function whoWon(playerScore,computerScore){
+       if(playerScore>computerScore) {console.log("player Wins!!");}
+	else if(playerScore<computerScore) {console.log("computer Wins");}
+	else {console.log("its a tie");}
+  }
+     #+END_SRC
+
+** running the game (deprecated)
+
+   #+BEGIN_SRC  javascript  :tangle script.js
+// play5Rounds();
  #+END_SRC
 
-* running the game
+ 
+** attaching event listeners to buttons
 
-#+BEGIN_SRC  javascript  :tangle script.js
-play5Rounds();
-#+END_SRC
+
+ #+BEGIN_SRC  javascript  :tangle script.js
+ const buttons = document.querySelectorAll('.game');
+const rock = document.querySelector('.rock');
+const paper = document.querySelector('.paper');
+const scizzor = document.querySelector('.scizzor');
+
+rock.addEventListener('click',runGame);
+paper.addEventListener('click',runGame);
+scizzor.addEventListener('click',runGame);
+
+
+function runGame(event){
+let playerSelection = event.target.innerHTML.trim().toLowerCase();
+play5Rounds(playerSelection);
+//console.log(playerSelection);
+//console.log(event.target.innerHTML.trim().toLowerCase());
+
+};
+ #+END_SRC

@@ -27,26 +27,26 @@ function playRound(playerSelection, ComputerSelection){
 	console.log( `it's a tie, you chose ${playerSelection} and the computer chose ${computerSelection} `);return 0;}
 }
 
-function play5Rounds(){
-    let playerSelection;
-    let playerScore=0;
-    let computerScore=0;
-    let computerSelection = getComputerChoice();
-    for (let i = 0; i < 5; i++){
-	console.log(`Round ${i+1}`);
-	computerSelection = getComputerChoice();
-	playerSelection = prompt("enter rock,paper or scizzor");
+function play5Rounds(playerSelection){
+ console.log(playerSelection);
+       let playerScore=0;
+       let computerScore=0;
+       let computerSelection = getComputerChoice();
+       for (let i = 0; i < 5; i++){
+	   console.log(`Round ${i+1}`);
+	   computerSelection = getComputerChoice();
+//	   playerSelection = prompt("enter rock,paper or scizzor");
 
-	let scoreOfThisRound = playRound(playerSelection, computerSelection);
+	   let scoreOfThisRound = playRound(playerSelection, computerSelection);
 
-	if (scoreOfThisRound == 1){playerScore++;}
-	else if (scoreOfThisRound==-1){computerScore++;}
-	else{}
-	console.log(`playerScore = ${playerScore} and computerScore = ${computerScore}`);   
+	   if (scoreOfThisRound == 1){playerScore++;}
+	   else if (scoreOfThisRound==-1){computerScore++;}
+	   else{}
+	   console.log(`playerScore = ${playerScore} and computerScore = ${computerScore}`);   
 
-    }
-    whoWon(playerScore, computerScore);
-}
+       }
+       whoWon(playerScore, computerScore);
+   }
 
 function whoWon(playerScore,computerScore){
      if(playerScore>computerScore) {console.log("player Wins!!");}
@@ -54,4 +54,22 @@ function whoWon(playerScore,computerScore){
       else {console.log("its a tie");}
 }
 
-play5Rounds();
+// play5Rounds();
+
+const buttons = document.querySelectorAll('.game');
+const rock = document.querySelector('.rock');
+const paper = document.querySelector('.paper');
+const scizzor = document.querySelector('.scizzor');
+
+rock.addEventListener('click',runGame);
+paper.addEventListener('click',runGame);
+scizzor.addEventListener('click',runGame);
+
+
+function runGame(event){
+let playerSelection = event.target.innerHTML.trim().toLowerCase();
+play5Rounds(playerSelection);
+//console.log(playerSelection);
+//console.log(event.target.innerHTML.trim().toLowerCase());
+
+};
