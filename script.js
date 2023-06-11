@@ -27,11 +27,28 @@ function playRound(playerSelection, ComputerSelection){
 	console.log( `it's a tie, you chose ${playerSelection} and the computer chose ${computerSelection} `);return 0;}
 }
 
-function play5Rounds(playerSelection){
- console.log(playerSelection);
+let score = document.querySelector('.score'); 
        let playerScore=0;
        let computerScore=0;
+let currentPlayerSelection = '';
+      function play5Rounds(playerSelection){
+
+// console.log(playerSelection);
+
+
        let computerSelection = getComputerChoice();
+
+	   let scoreOfThisRound = playRound(currentPlayerSelection, computerSelection);
+
+	   if (scoreOfThisRound == 1){playerScore++;}
+	   else if (scoreOfThisRound==-1){computerScore++;}
+	   else{}
+	   console.log(`playerScore = ${playerScore} and computerScore = ${computerScore}`);   
+	    score.innerHTML = `<p>player's Score = ${playerScore} and computer's Score = ${computerScore}</p>`
+	  
+	}   
+
+/*
        for (let i = 0; i < 5; i++){
 	   console.log(`Round ${i+1}`);
 	   computerSelection = getComputerChoice();
@@ -47,6 +64,7 @@ function play5Rounds(playerSelection){
        }
        whoWon(playerScore, computerScore);
    }
+  */
 
 function whoWon(playerScore,computerScore){
      if(playerScore>computerScore) {console.log("player Wins!!");}
@@ -54,22 +72,66 @@ function whoWon(playerScore,computerScore){
       else {console.log("its a tie");}
 }
 
-// play5Rounds();
-
-const buttons = document.querySelectorAll('.game');
-const rock = document.querySelector('.rock');
+const buttons = document.querySelectorAll('.game');//selecting all the buttons
+const rock = document.querySelector('.rock');//attaching all the event listgenteris
 const paper = document.querySelector('.paper');
 const scizzor = document.querySelector('.scizzor');
 
-rock.addEventListener('click',runGame);
-paper.addEventListener('click',runGame);
-scizzor.addEventListener('click',runGame);
+
+let round = 0;
+rock.addEventListener('click',function(){
+runGame();
+
+if(round==5){
+round = 0;
+console.log("reset");
+whoWon(playerScore,computerScore);
+
+	
+	playerScore=0;
+	computerScore=0;
+	console.log(`player score is resetted to ${playerScore} and computer score is reset to ${computerScore}`);
+	    score.innerHTML = `<p>player's Score = ${playerScore} and computer's Score = ${computerScore}</p>`
+};
+});
+
+paper.addEventListener('click',function(){
+runGame();
+
+if(round==5){
+round = 0;
+console.log("reset");
+whoWon(playerScore,computerScore);
+
+	
+	playerScore=0;
+	computerScore=0;
+	console.log(`player score is resetted to ${playerScore} and computer score is reset to ${computerScore}`);
+	    score.innerHTML = `<p>player's Score = ${playerScore} and computer's Score = ${computerScore}</p>`
+};
+});
+scizzor.addEventListener('click',function(){
+runGame();
+
+if(round==5){
+round = 0;
+console.log("reset");
+whoWon(playerScore,computerScore);
+
+	
+	playerScore=0;
+	computerScore=0;
+	console.log(`player score is resetted to ${playerScore} and computer score is reset to ${computerScore}`);
+	    score.innerHTML = `<p>player's Score = ${playerScore} and computer's Score = ${computerScore}</p>`
+};
+});
 
 
-function runGame(event){
-let playerSelection = event.target.innerHTML.trim().toLowerCase();
-play5Rounds(playerSelection);
-//console.log(playerSelection);
-//console.log(event.target.innerHTML.trim().toLowerCase());
 
+function runGame(){
+currentPlayerSelection = event.target.innerHTML.trim().toLowerCase();
+round++;
+console.log("round: "+ round);
+play5Rounds(currentPlayerSelection);
+return round;
 };
